@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,17 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class CipherText extends AppCompatActivity {
+public class CipherTranspose extends AppCompatActivity {
 
     TextView txtOutput;
     EditText txtInput, txtKey;
@@ -43,7 +41,7 @@ public class CipherText extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cipher_text);
+        setContentView(R.layout.activity_cipher_transpose);
 
         txtOutput = findViewById(R.id.txtOutput);
         txtInput = findViewById(R.id.etInput);
@@ -86,7 +84,7 @@ public class CipherText extends AppCompatActivity {
             public void onClick(View view) {
                 String cipherText = txtOutput.getText().toString();
                 if(cipherText.isEmpty()) {
-                    Toast.makeText(CipherText.this, "Cipher belum digenerate..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CipherTranspose.this, "Cipher belum digenerate..", Toast.LENGTH_SHORT).show();
                 }else{
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         //check permission
@@ -206,23 +204,47 @@ public class CipherText extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        String fileName = "Crypton_Text_" + timeStamp + ".txt";
+        String fileName = "Crypton_Transposition_" + timeStamp + ".txt";
 
         intent.putExtra(intent.EXTRA_TITLE, fileName);
         startActivityForResult(intent, WRITE_REQUEST_CODE);
     }
 
 
-
     String encrypt(int key, String input){
         char[] chars = input.toCharArray();
-        key = key % 255;
+
+        int num_row = 0;
+        int id_plain = 0;
+        if(input.length() % key == 0){
+            num_row = input.length() / key;
+            Log.d("Row", Integer.toString(num_row));
+            Log.d("Input Length", Integer.toString(input.length()));
+            Log.d("Key", Integer.toString(key));
+        }else{
+            num_row = (input.length() / key) + 1;
+            Log.d("Row", Integer.toString(num_row));
+            Log.d("Input Length", Integer.toString(input.length()));
+            Log.d("Key", Integer.toString(key));
+        }
+
+        char plain[][] = new char[num_row][key];
+        for(int i=0 ; i<num_row ; i++){
+            for(int j=0 ; j<key ; j++){
+                if(id_plain < input.length()){
+                    plain[i][j] = chars[id_plain];
+                    id_plain++;
+                }else{
+                    plain[i][j] = '.';
+                }
+            }
+        }
 
         String output = "";
-
-        for(char c : chars){
-            c += key;
-            output = output + c;
+        for(int i=0 ; i<key ; i++){
+            for(int j=0 ; j<num_row ; j++){
+                output = output + plain[j][i];
+            }
         }
 
         return output;
@@ -230,13 +252,32 @@ public class CipherText extends AppCompatActivity {
 
     String decrypt(int key, String input){
         char[] chars = input.toCharArray();
-        key = key % 255;
+        key = input.length() / key;
+        int num_row = 0;
+        int id_plain = 0;
+        if(input.length() % key == 0){
+            num_row = input.length() / key;
+        }else{
+            num_row = (input.length() / key) + 1;
+        }
+
+        char plain[][] = new char[num_row][key];
+        for(int i=0 ; i<num_row ; i++){
+            for(int j=0 ; j<key ; j++){
+                if(id_plain < input.length()){
+                    plain[i][j] = chars[id_plain];
+                    id_plain++;
+                }else{
+                    plain[i][j] = '.';
+                }
+            }
+        }
 
         String output = "";
-
-        for(char c : chars){
-            c -= key;
-            output = output + c;
+        for(int i=0 ; i<key ; i++){
+            for(int j=0 ; j<num_row ; j++){
+                output = output + plain[j][i];
+            }
         }
 
         return output;

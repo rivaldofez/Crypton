@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,17 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class CipherText extends AppCompatActivity {
+public class CipherSuper extends AppCompatActivity {
 
     TextView txtOutput;
     EditText txtInput, txtKey;
@@ -43,7 +41,7 @@ public class CipherText extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cipher_text);
+        setContentView(R.layout.activity_cipher_super);
 
         txtOutput = findViewById(R.id.txtOutput);
         txtInput = findViewById(R.id.etInput);
@@ -58,12 +56,12 @@ public class CipherText extends AppCompatActivity {
             public void onClick(View view) {
                 String keys = txtKey.getText().toString();
                 if(!keys.isEmpty()){
-                    key = Integer.parseInt(txtKey.getText().toString());
+                    key = (Integer.parseInt(txtKey.getText().toString())) % 255;
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
 
-                txtOutput.setText(encrypt(key,txtInput.getText().toString()));
+                txtOutput.setText(encryptCipher(key,encryptTranspose(key,txtInput.getText().toString())));
             }
         });
 
@@ -72,12 +70,12 @@ public class CipherText extends AppCompatActivity {
             public void onClick(View view) {
                 String keys = txtKey.getText().toString();
                 if(!keys.isEmpty()){
-                    key = Integer.parseInt(txtKey.getText().toString());
+                    key = (Integer.parseInt(txtKey.getText().toString())) % 255;
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
 
-                txtOutput.setText(decrypt(key,txtInput.getText().toString()));
+                txtOutput.setText(decryptTranspose(key,decryptCipher(key,txtInput.getText().toString())));
             }
         });
 
@@ -86,7 +84,7 @@ public class CipherText extends AppCompatActivity {
             public void onClick(View view) {
                 String cipherText = txtOutput.getText().toString();
                 if(cipherText.isEmpty()) {
-                    Toast.makeText(CipherText.this, "Cipher belum digenerate..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CipherSuper.this, "Cipher belum digenerate..", Toast.LENGTH_SHORT).show();
                 }else{
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         //check permission
@@ -96,7 +94,6 @@ public class CipherText extends AppCompatActivity {
                             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_EXTERNAL_STORAGE_CODE);
                         }
                     }else{
-                        //OS dibawah marshmellow
                         performSaveFile();
                     }
                 }
@@ -131,6 +128,7 @@ public class CipherText extends AppCompatActivity {
             //jika request batal, hasil array kosong
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+//                saveToTxtFile(txtOutput.getText().toString());
                 performSaveFile();
             }else{
                 Toast.makeText(this,"Storage permission is required to save file",Toast.LENGTH_SHORT).show();
@@ -206,17 +204,80 @@ public class CipherText extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        String fileName = "Crypton_Text_" + timeStamp + ".txt";
+        String fileName = "Crypton_Super_" + timeStamp + ".txt";
 
         intent.putExtra(intent.EXTRA_TITLE, fileName);
         startActivityForResult(intent, WRITE_REQUEST_CODE);
     }
 
-
-
-    String encrypt(int key, String input){
+    String encryptTranspose(int key, String input){
         char[] chars = input.toCharArray();
-        key = key % 255;
+
+        int num_row = 0;
+        int id_plain = 0;
+        if(input.length() % key == 0){
+            num_row = input.length() / key;
+        }else{
+            num_row = (input.length() / key) + 1;
+        }
+
+        char plain[][] = new char[num_row][key];
+        for(int i=0 ; i<num_row ; i++){
+            for(int j=0 ; j<key ; j++){
+                if(id_plain < input.length()){
+                    plain[i][j] = chars[id_plain];
+                    id_plain++;
+                }else{
+                    plain[i][j] = '.';
+                }
+            }
+        }
+
+        String output = "";
+        for(int i=0 ; i<key ; i++){
+            for(int j=0 ; j<num_row ; j++){
+                output = output + plain[j][i];
+            }
+        }
+
+        return output;
+    }
+
+    String decryptTranspose(int key, String input){
+        char[] chars = input.toCharArray();
+        key = input.length() / key;
+        int num_row = 0;
+        int id_plain = 0;
+        if(input.length() % key == 0){
+            num_row = input.length() / key;
+        }else{
+            num_row = (input.length() / key) + 1;
+        }
+
+        char plain[][] = new char[num_row][key];
+        for(int i=0 ; i<num_row ; i++){
+            for(int j=0 ; j<key ; j++){
+                if(id_plain < input.length()){
+                    plain[i][j] = chars[id_plain];
+                    id_plain++;
+                }else{
+                    plain[i][j] = '.';
+                }
+            }
+        }
+
+        String output = "";
+        for(int i=0 ; i<key ; i++){
+            for(int j=0 ; j<num_row ; j++){
+                output = output + plain[j][i];
+            }
+        }
+
+        return output;
+    }
+
+    String encryptCipher(int key, String input){
+        char[] chars = input.toCharArray();
 
         String output = "";
 
@@ -228,9 +289,8 @@ public class CipherText extends AppCompatActivity {
         return output;
     }
 
-    String decrypt(int key, String input){
+    String decryptCipher(int key, String input){
         char[] chars = input.toCharArray();
-        key = key % 255;
 
         String output = "";
 

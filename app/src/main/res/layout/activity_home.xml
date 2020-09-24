@@ -1,136 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgLogo"
         android:layout_width="249dp"
         android:layout_height="57dp"
+        android:layout_marginTop="32dp"
         android:contentDescription="TODO"
-        app:srcCompat="@drawable/crypton2"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/crypton2" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="354dp"
-        android:layout_height="155dp"
-        android:background="@drawable/custom_menu"
-        android:elevation="15dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="97dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerCipher"
+            android:layout_width="0dp"
+            android:layout_height="155dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/custom_menu"
+            android:elevation="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/txtCipher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Caesar Cipher"
+                android:textColor="#1A2050"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgCipher"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCipher"
+                app:srcCompat="@drawable/menu_cc" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerTranspose"
+            android:layout_width="0dp"
+            android:layout_height="155dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/custom_menu"
+            android:elevation="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerCipher"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/txtTranspose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Transposisi Cipher"
+                android:textColor="#1A2050"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgTranspose"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTranspose"
+                app:srcCompat="@drawable/menu_tc" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerSuper"
+            android:layout_width="0dp"
+            android:layout_height="155dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/custom_menu"
+            android:elevation="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerTranspose"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/txtSuper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Cipher Super Encryption"
+                android:textColor="#1A2050"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageSuper"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSuper"
+                app:layout_constraintVertical_bias="0.304"
+                app:srcCompat="@drawable/menu_cc_tc" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="126dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/btn_2"
             android:fontFamily="sans-serif-medium"
-            android:text="Caesar Cipher"
-            android:textColor="#1A2050"
+            android:text="Exit"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="8dp" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="307dp"
-            android:layout_height="100dp"
-            app:srcCompat="@drawable/menu_cc"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="39dp" />
-
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerSuper" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="354dp"
-        android:layout_height="155dp"
-        android:background="@drawable/custom_menu"
-        android:elevation="15dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="272dp">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="Transposisi Cipher"
-            android:textColor="#1A2050"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="8dp" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="307dp"
-            android:layout_height="100dp"
-            app:srcCompat="@drawable/menu_tc"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="39dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="354dp"
-        android:layout_height="155dp"
-        android:background="@drawable/custom_menu"
-        android:elevation="15dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="443dp">
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="CCaesar Cipher + Tranposisi Cipher"
-            android:textColor="#1A2050"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="8dp" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="307dp"
-            android:layout_height="100dp"
-            app:srcCompat="@drawable/menu_cc_tc"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="39dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="126dp"
-        android:layout_height="44dp"
-        android:background="@drawable/btn_1"
-        android:fontFamily="sans-serif-medium"
-        android:text="About"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="44dp"
-        tools:layout_editor_absoluteY="649dp" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="126dp"
-        android:layout_height="44dp"
-        android:background="@drawable/btn_2"
-        android:fontFamily="sans-serif-medium"
-        android:text="Exit"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="244dp"
-        tools:layout_editor_absoluteY="649dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
