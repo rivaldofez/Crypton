@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-public class SplashSccreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_sccreen);
+        setContentView(R.layout.activity_splash_screen);
 
         ImageView imageView = findViewById(R.id.imgLogo);
 
@@ -22,7 +22,7 @@ public class SplashSccreen extends AppCompatActivity {
         final ProgressBar progressBar = findViewById(R.id.progressSplash);
         progressBar.setVisibility(View.VISIBLE);
 
-        setContentView(R.layout.activity_splash_sccreen);
+        setContentView(R.layout.activity_splash_screen);
         //waktu splash screen
         int splashscreen_time = 3500;
         new Handler().postDelayed(new Runnable() {
@@ -30,7 +30,7 @@ public class SplashSccreen extends AppCompatActivity {
             public void run() {
                 //setelah waktu splashscreen habis, maka langsung berpindah ke Halaman Login
                 progressBar.setVisibility(View.GONE);
-                startActivity(new Intent(SplashSccreen.this, Home.class));
+                startActivity(new Intent(SplashScreen.this, Home.class));
                 finish();
             }
         }, splashscreen_time);

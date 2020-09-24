@@ -20,7 +20,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-black"
-            android:text="Cipher Super Encryption"
+            android:text="Cipher Super"
             android:textSize="25sp" />
 
         <TextView
@@ -47,15 +47,18 @@
 
             <EditText
                 android:id="@+id/etInput"
-                android:layout_below="@id/txtCipher"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_height="150dp"
+                android:layout_below="@id/txtCipher"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
                 android:background="#FFFFFF"
                 android:ems="10"
-                android:padding="8dp"
                 android:gravity="top"
-                android:inputType="textMultiLine" />
+                android:hint="Input Text or upload file.."
+                android:inputType="textMultiLine"
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/btnUpload"
@@ -98,15 +101,16 @@
 
             <EditText
                 android:id="@+id/etKey"
-                android:layout_below="@id/txtCipher"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_height="50dp"
+                android:layout_below="@id/txtCipher"
+                android:layout_marginTop="8dp"
                 android:background="#FFFFFF"
                 android:ems="10"
-                android:padding="8dp"
                 android:gravity="top"
-                android:inputType="numberSigned"/>
+                android:hint="Input key.."
+                android:inputType="numberSigned"
+                android:padding="8dp" />
 
 
         </RelativeLayout>
