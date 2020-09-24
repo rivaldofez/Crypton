@@ -36,7 +36,7 @@
             tools:layout_editor_absoluteY="8dp" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imgLogo"
             android:layout_width="307dp"
             android:layout_height="100dp"
             app:srcCompat="@drawable/menu_cc"

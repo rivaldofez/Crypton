@@ -12,13 +12,13 @@
         <activity android:name=".CCplusTC"></activity>
         <activity android:name=".TransposisiCipher" />
         <activity android:name=".Home" />
-        <activity android:name=".SplashSccreen" />
-        <activity android:name=".CipherText">
+        <activity android:name=".SplashSccreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".CipherText">
         </activity>
     </application>
 
