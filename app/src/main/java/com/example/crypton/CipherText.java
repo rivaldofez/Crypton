@@ -1,10 +1,14 @@
 package com.example.crypton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,9 +18,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -27,6 +35,8 @@ public class CipherText extends AppCompatActivity {
     Button btnEncrypt, btnDecrypt, btnUpload, btnSave;
     Integer key;
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
+    private static final int READ_EXTERNAL_STORAGE_CODE = 1000;
+    private static final int READ_REQUEST_CODE = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +88,7 @@ public class CipherText extends AppCompatActivity {
                 }else{
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         //check permission
-                        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED){
+                        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                             String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
                             //show pop up untuk permission
@@ -95,19 +104,77 @@ public class CipherText extends AppCompatActivity {
                 }
             }
         });
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
+        }
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performFileSearch();
+            }
+        });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case WRITE_EXTERNAL_STORAGE_CODE: {
-                //jika request batal, hasil array kosong
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //permission diizinkan, save ke txt
-                    saveToTxtFile(txtOutput.getText().toString());
-                }else{
-                    Toast.makeText(this,"Storage permission is required to save file",Toast.LENGTH_SHORT).show();
+        if(requestCode == WRITE_EXTERNAL_STORAGE_CODE){
+            //jika request batal, hasil array kosong
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                //permission diizinkan, save ke txt
+                saveToTxtFile(txtOutput.getText().toString());
+            }else{
+                Toast.makeText(this,"Storage permission is required to save file",Toast.LENGTH_SHORT).show();
+            }
+        }else if(requestCode == READ_EXTERNAL_STORAGE_CODE){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this,"Permission Not Granted",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private String readText(String input){
+        File file = new File(Environment.getExternalStorageDirectory(), input);
+        StringBuilder text = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null){
+                text.append(line);
+                text.append("\n");
+            }
+            br.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return text.toString();
+    }
+
+    private void performFileSearch(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/*");
+        startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            if(data != null){
+                Uri uri = data.getData();
+                String path = uri.getPath();
+                path = path.substring(path.indexOf(":") + 1);
+                if(path.contains("emulated")){
+                    path = path.substring(path.indexOf("0") + 1);
                 }
+                Toast.makeText(this, "" + path, Toast.LENGTH_SHORT).show();
+                txtInput.setText(readText(path));
             }
         }
     }
