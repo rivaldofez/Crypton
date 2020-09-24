@@ -3,6 +3,7 @@ package com.example.crypton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,11 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class CipherSuper extends AppCompatActivity {
 
     TextView txtOutput;
     EditText txtInput, txtKey;
-    Button btnEncrypt, btnDecrypt;
+    Button btnEncrypt, btnDecrypt, btnAddFiles;
     Integer key;
 
     @Override
@@ -26,6 +29,7 @@ public class CipherSuper extends AppCompatActivity {
         txtKey = findViewById(R.id.etKey);
         btnDecrypt = findViewById(R.id.btnDecrypt);
         btnEncrypt = findViewById(R.id.btnEncrypt);
+        btnAddFiles = findViewById(R.id.btnAddFiles);
 
         btnEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +56,13 @@ public class CipherSuper extends AppCompatActivity {
                 }
 
                 txtOutput.setText(decryptTranspose(key,decryptCipher(key,txtInput.getText().toString())));
+            }
+        });
+
+        btnAddFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
