@@ -29,7 +29,7 @@ public class CipherSuper extends AppCompatActivity {
         txtKey = findViewById(R.id.etKey);
         btnDecrypt = findViewById(R.id.btnDecrypt);
         btnEncrypt = findViewById(R.id.btnEncrypt);
-        btnAddFiles = findViewById(R.id.btnAddFiles);
+        btnAddFiles = findViewById(R.id.btnUpload);
 
         btnEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
