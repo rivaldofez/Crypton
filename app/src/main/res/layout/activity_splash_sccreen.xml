@@ -10,7 +10,7 @@
         android:id="@+id/imageView"
         android:layout_width="94dp"
         android:layout_height="118dp"
-        app:srcCompat="@mipmap/crypton"
+        app:srcCompat="@drawable/crypton"
         tools:layout_editor_absoluteX="158dp"
         tools:layout_editor_absoluteY="306dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
