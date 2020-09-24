@@ -16,8 +16,6 @@ public class CipherText extends AppCompatActivity {
     Button btnEncrypt, btnDecrypt;
     Integer key;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +30,8 @@ public class CipherText extends AppCompatActivity {
         btnEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String key = txtKey.getText().toString();
-                if(!key.isEmpty()){
+                String keys = txtKey.getText().toString();
+                if(!keys.isEmpty()){
                     key = Integer.parseInt(txtKey.getText().toString());
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
@@ -46,8 +44,8 @@ public class CipherText extends AppCompatActivity {
         btnDecrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(txtKey.getText().toString().length()>0){
+                String keys = txtKey.getText().toString();
+                if(!keys.isEmpty()){
                     key = Integer.parseInt(txtKey.getText().toString());
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
