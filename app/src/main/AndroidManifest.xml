@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CipherSuper">
+        <activity android:name=".CCplusTC"></activity>
+        <activity android:name=".TransposisiCipher" />
+        <activity android:name=".Home" />
+        <activity android:name=".SplashSccreen" />
+        <activity android:name=".CipherText">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".CipherTranspose">
-        </activity>
-        <activity android:name=".CipherText">
         </activity>
     </application>
 
