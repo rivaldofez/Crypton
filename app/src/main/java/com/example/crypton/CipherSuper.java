@@ -89,14 +89,11 @@ public class CipherSuper extends AppCompatActivity {
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         //check permission
                         if(getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-//                            saveToTxtFile(cipherText);
                             performSaveFile();
                         }else{
                             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_EXTERNAL_STORAGE_CODE);
                         }
                     }else{
-                        //OS dibawah marshmellow
-//                        saveToTxtFile(cipherText);
                         performSaveFile();
                     }
                 }
