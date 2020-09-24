@@ -173,8 +173,6 @@ public class CipherText extends AppCompatActivity {
         startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK){

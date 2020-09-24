@@ -17,6 +17,11 @@ public class CipherTranspose extends AppCompatActivity {
     Button btnEncrypt, btnDecrypt;
     Integer key;
 
+    private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
+    private static final int READ_EXTERNAL_STORAGE_CODE = 2;
+    private static final int READ_REQUEST_CODE = 42;
+    private static final int WRITE_REQUEST_CODE = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -20,7 +20,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-black"
-            android:text="Cipher Super"
+            android:text="Cipher Super Encryption"
             android:textSize="25sp" />
 
         <TextView
