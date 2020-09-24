@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CipherText extends AppCompatActivity {
 
     TextView txtOutput;
-    EditText txtInput;
+    EditText txtInput, txtKey;
     Button btnEncrypt, btnDecrypt;
+    Integer key;
 
 
 
@@ -23,20 +25,35 @@ public class CipherText extends AppCompatActivity {
 
         txtOutput = findViewById(R.id.txtOutput);
         txtInput = findViewById(R.id.etInput);
+        txtKey = findViewById(R.id.etKey);
         btnDecrypt = findViewById(R.id.btnDecrypt);
         btnEncrypt = findViewById(R.id.btnEncrypt);
 
         btnEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtOutput.setText(encrypt(256,txtInput.getText().toString()));
+                String key = txtKey.getText().toString();
+                if(!key.isEmpty()){
+                    key = Integer.parseInt(txtKey.getText().toString());
+                }else{
+                    Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                }
+
+                txtOutput.setText(encrypt(key,txtInput.getText().toString()));
             }
         });
 
         btnDecrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtOutput.setText(decrypt(256,txtInput.getText().toString()));
+
+                if(txtKey.getText().toString().length()>0){
+                    key = Integer.parseInt(txtKey.getText().toString());
+                }else{
+                    Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                }
+
+                txtOutput.setText(decrypt(key,txtInput.getText().toString()));
             }
         });
     }
