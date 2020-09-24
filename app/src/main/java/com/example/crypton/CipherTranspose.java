@@ -102,14 +102,8 @@ public class CipherTranspose extends AppCompatActivity {
         int id_plain = 0;
         if(input.length() % key == 0){
             num_row = input.length() / key;
-            Log.d("Row", Integer.toString(num_row));
-            Log.d("Input Length", Integer.toString(input.length()));
-            Log.d("Key", Integer.toString(key));
         }else{
             num_row = (input.length() / key) + 1;
-            Log.d("Row", Integer.toString(num_row));
-            Log.d("Input Length", Integer.toString(input.length()));
-            Log.d("Key", Integer.toString(key));
         }
 
         char plain[][] = new char[num_row][key];
