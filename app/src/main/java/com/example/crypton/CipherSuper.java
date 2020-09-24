@@ -151,7 +151,6 @@ public class CipherSuper extends AppCompatActivity {
 
             while ((line = br.readLine()) != null){
                 text.append(line);
-                text.append("\n");
             }
             br.close();
 

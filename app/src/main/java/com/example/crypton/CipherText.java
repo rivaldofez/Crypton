@@ -153,7 +153,6 @@ public class CipherText extends AppCompatActivity {
 
             while ((line = br.readLine()) != null){
                 text.append(line);
-                text.append("\n");
             }
             br.close();
 
