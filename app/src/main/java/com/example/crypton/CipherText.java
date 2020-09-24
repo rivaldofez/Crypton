@@ -131,7 +131,6 @@ public class CipherText extends AppCompatActivity {
             //jika request batal, hasil array kosong
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
-//                saveToTxtFile(txtOutput.getText().toString());
                 performSaveFile();
             }else{
                 Toast.makeText(this,"Storage permission is required to save file",Toast.LENGTH_SHORT).show();
@@ -208,7 +207,7 @@ public class CipherText extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        String fileName = "Crypton_CipherText_" + timeStamp + ".txt";
+        String fileName = "Crypton_Text_" + timeStamp + ".txt";
 
         intent.putExtra(intent.EXTRA_TITLE, fileName);
         startActivityForResult(intent, WRITE_REQUEST_CODE);
