@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -35,8 +36,9 @@ public class CipherText extends AppCompatActivity {
     Button btnEncrypt, btnDecrypt, btnUpload, btnSave;
     Integer key;
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
-    private static final int READ_EXTERNAL_STORAGE_CODE = 1000;
+    private static final int READ_EXTERNAL_STORAGE_CODE = 2;
     private static final int READ_REQUEST_CODE = 42;
+    private static final int WRITE_REQUEST_CODE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,43 +90,51 @@ public class CipherText extends AppCompatActivity {
                 }else{
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         //check permission
-                        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-                            //show pop up untuk permission
-                            requestPermissions(permissions, WRITE_EXTERNAL_STORAGE_CODE);
+                        if(getApplicationContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+//                            saveToTxtFile(cipherText);
+                            performSaveFile();
                         }else{
-                            //permission sudah diizinkan
-                            saveToTxtFile(cipherText);
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_EXTERNAL_STORAGE_CODE);
                         }
                     }else{
                         //OS dibawah marshmellow
-                        saveToTxtFile(cipherText);
+//                        saveToTxtFile(cipherText);
+                        performSaveFile();
                     }
                 }
             }
         });
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
-        }
-
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                performFileSearch();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    //check permission
+                    if(getApplicationContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                        performFileSearch();
+                    }else{
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},READ_EXTERNAL_STORAGE_CODE);
+                    }
+                }else{
+                    //OS dibawah marshmellow
+                    performFileSearch();
+                }
+
             }
         });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
         if(requestCode == WRITE_EXTERNAL_STORAGE_CODE){
             //jika request batal, hasil array kosong
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                //permission diizinkan, save ke txt
-                saveToTxtFile(txtOutput.getText().toString());
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+//                saveToTxtFile(txtOutput.getText().toString());
+                performSaveFile();
             }else{
                 Toast.makeText(this,"Storage permission is required to save file",Toast.LENGTH_SHORT).show();
             }
@@ -132,7 +142,7 @@ public class CipherText extends AppCompatActivity {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this,"Permission Not Granted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Storage permission is required to read file",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -163,6 +173,8 @@ public class CipherText extends AppCompatActivity {
         startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
@@ -176,38 +188,37 @@ public class CipherText extends AppCompatActivity {
                 Toast.makeText(this, "" + path, Toast.LENGTH_SHORT).show();
                 txtInput.setText(readText(path));
             }
+        }else if(requestCode == WRITE_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+
+                try{
+                    Uri uri = data.getData();
+                    OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                    outputStream.write(txtOutput.getText().toString().getBytes());
+                    outputStream.close();
+
+                    Toast.makeText(this, "File berhasil disimpan", Toast.LENGTH_SHORT).show();
+                }catch (IOException e){
+                    Toast.makeText(this, "File gagal disimpan", Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, "File gagal disimpan", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private void saveToTxtFile(String cipherText) {
-        //get current time untuk penamaan
+    private void performSaveFile(){
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        try {
-            //path tp storage
-            File path = Environment.getExternalStorageDirectory();
+        String fileName = "Crypton_CipherText_" + timeStamp + ".txt";
 
-            //create folder
-            File dir = new File(path + "/Crypton/");
-            dir.mkdirs();
-
-            //filename
-            String fileName = "Crypton_CipherText_" + timeStamp + ".txt";
-
-            File file = new File(dir, fileName);
-
-            //File writer untuk membentuk karakter kedalam file
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(cipherText);
-            bw.close();
-
-            Toast.makeText(this, fileName+ "is saved to\n" +dir , Toast.LENGTH_SHORT).show();
-
-        }catch (Exception e){
-            //jika gagal
-            Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        intent.putExtra(intent.EXTRA_TITLE, fileName);
+        startActivityForResult(intent, WRITE_REQUEST_CODE);
     }
+
+
 
     String encrypt(int key, String input){
         char[] chars = input.toCharArray();
