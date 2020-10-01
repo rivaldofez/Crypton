@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class Home extends AppCompatActivity {
 
-    ConstraintLayout containerCipher, containerTranspose, containerSuper;
+    ConstraintLayout containerCipher, containerTranspose, containerSuper, containerVigenere, containerPlayfair;
     Button btnExit;
 
     @Override
@@ -21,6 +21,8 @@ public class Home extends AppCompatActivity {
         containerCipher = findViewById(R.id.containerCipher);
         containerSuper = findViewById(R.id.containerSuper);
         containerTranspose = findViewById(R.id.containerTranspose);
+        containerVigenere = findViewById(R.id.containerVigenere);
+        containerPlayfair = findViewById(R.id.containerPlayfair);
         btnExit = findViewById(R.id.btnExit);
 
         containerCipher.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +43,21 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, CipherSuper.class));
+            }
+        });
+
+        containerVigenere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Home.this, CipherVigenere.class));
+            }
+        });
+
+
+        containerPlayfair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Home.this, CipherPlayfair.class));
             }
         });
 
