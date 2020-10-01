@@ -212,7 +212,7 @@ public class CipherPlayfair extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        String fileName = "Crypton_Transposition_" + timeStamp + ".txt";
+        String fileName = "Crypton_Playfair_" + timeStamp + ".txt";
 
         intent.putExtra(intent.EXTRA_TITLE, fileName);
         startActivityForResult(intent, WRITE_REQUEST_CODE);
