@@ -27,14 +27,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.Buffer;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class CipherVigenere extends AppCompatActivity {
 
     TextView txtOutput;
     EditText txtInput, txtKey;
     Button btnEncrypt, btnDecrypt, btnUpload, btnSave;
-    Integer key;
+    String key;
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
     private static final int READ_EXTERNAL_STORAGE_CODE = 2;
     private static final int READ_REQUEST_CODE = 42;
@@ -56,28 +58,24 @@ public class CipherVigenere extends AppCompatActivity {
         btnEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String keys = txtKey.getText().toString();
-                if(!keys.isEmpty()){
-                    key = Integer.parseInt(txtKey.getText().toString());
+                String key = removeChar(generateKey(txtInput.getText().toString(), txtKey.getText().toString().toUpperCase()),' ');
+                if(!key.isEmpty()){
+                    txtOutput.setText(removeChar(encrypt(txtInput.getText().toString().toUpperCase(), key),' '));
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
-
-                txtOutput.setText(encrypt(key,txtInput.getText().toString()));
             }
         });
 
         btnDecrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String keys = txtKey.getText().toString();
-                if(!keys.isEmpty()){
-                    key = Integer.parseInt(txtKey.getText().toString());
+                String key = removeChar(generateKey(txtInput.getText().toString(), txtKey.getText().toString().toUpperCase()),' ');
+                if(!key.isEmpty()){
+                    txtOutput.setText(removeChar(decrypt(txtInput.getText().toString().toUpperCase(), key),' '));
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
-
-                txtOutput.setText(decrypt(key,txtInput.getText().toString()));
             }
         });
 
@@ -212,33 +210,60 @@ public class CipherVigenere extends AppCompatActivity {
         startActivityForResult(intent, WRITE_REQUEST_CODE);
     }
 
-
-
-    String encrypt(int key, String input){
-        char[] chars = input.toCharArray();
-        key = key % 255;
-
-        String output = "";
-
-        for(char c : chars){
-            c += key;
-            output = output + c;
+    String removeChar(String input, char c) {
+        if (input == null || input.length() <= 1)
+            return input;
+        char[] inputArray = input.toCharArray();
+        char[] outputArray = new char[inputArray.length];
+        int outputArrayIndex = 0;
+        for (int i = 0; i < inputArray.length; i++) {
+            char p = inputArray[i];
+            if (p != c) {
+                outputArray[outputArrayIndex] = p;
+                outputArrayIndex++;
+            }
         }
-
-        return output;
+        return new String(outputArray, 0, outputArrayIndex);
     }
 
-    String decrypt(int key, String input){
-        char[] chars = input.toCharArray();
-        key = key % 255;
-
-        String output = "";
-
-        for(char c : chars){
-            c -= key;
-            output = output + c;
+    String generateKey(String input, String key)
+    {
+        key = removeChar(key,' ');
+        int x = input.length();
+        for (int i = 0; ; i++)
+        {
+            if (x == i)
+                i = 0;
+            if (key.length() == input.length())
+                break;
+            key+=(key.charAt(i));
         }
-
-        return output;
+        return key;
     }
+
+    String encrypt(String input, String key)
+    {
+        String hasil = "";
+        for(int i = 0; i < input.length(); i++) {
+            int x = (input.charAt(i) + key.charAt(i)) %26;
+
+            x += 'A';
+            hasil += (char)(x);
+        }
+        return hasil;
+    }
+
+    String decrypt(String input, String key)
+    {
+        String hasil = "";
+
+        for(int i = 0 ; i < input.length() && i < key.length(); i++) {
+            int x = (input.charAt(i) - key.charAt(i) + 26) %26;
+
+            x += 'A';
+            hasil += (char)(x);
+        }
+        return hasil;
+    }
+
 }
