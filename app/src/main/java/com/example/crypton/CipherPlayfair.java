@@ -34,7 +34,7 @@ public class CipherPlayfair extends AppCompatActivity {
     TextView txtOutput;
     EditText txtInput, txtKey;
     Button btnEncrypt, btnDecrypt, btnUpload, btnSave;
-    Integer key;
+    String key;
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
     private static final int READ_EXTERNAL_STORAGE_CODE = 2;
     private static final int READ_REQUEST_CODE = 42;
@@ -46,7 +46,8 @@ public class CipherPlayfair extends AppCompatActivity {
         setContentView(R.layout.activity_cipher_playfair);
 
         Log.d("Test", removeChar("rivaldoaldo",'a'));
-        Log.d("Test", removeChar(removeDuplicate(generateKey("jalanganeshasepuluh")),'j'));
+        Log.d("Test", removeChar(removeChar(removeDuplicate(generateKey("jalan ganesha sepuluh")),'j'),' '));
+        Log.d("Test", cleanPlain("temui ibu nanti malam"));
 
         txtOutput = findViewById(R.id.txtOutput);
         txtInput = findViewById(R.id.etInput);
@@ -61,12 +62,13 @@ public class CipherPlayfair extends AppCompatActivity {
             public void onClick(View view) {
                 String keys = txtKey.getText().toString();
                 if(!keys.isEmpty()){
-                    key = Integer.parseInt(txtKey.getText().toString());
+                    key = txtKey.getText().toString();
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
 
-                txtOutput.setText(encrypt(key,txtInput.getText().toString()));
+                Log.d("Test", encrypt(key,txtInput.getText().toString()));
+                txtOutput.setText(addSeparator(encrypt(key,txtInput.getText().toString().toLowerCase()),' '));
             }
         });
 
@@ -75,12 +77,13 @@ public class CipherPlayfair extends AppCompatActivity {
             public void onClick(View view) {
                 String keys = txtKey.getText().toString();
                 if(!keys.isEmpty()){
-                    key = Integer.parseInt(txtKey.getText().toString());
+                    key = txtKey.getText().toString();
                 }else{
                     Toast.makeText(getApplicationContext(), "Key tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
 
-                txtOutput.setText(decrypt(key,txtInput.getText().toString()));
+                Log.d("Test", encrypt(key,txtInput.getText().toString()));
+                txtOutput.setText(addSeparator(decrypt(key,txtInput.getText().toString().toLowerCase()),' '));
             }
         });
 
@@ -243,6 +246,7 @@ public class CipherPlayfair extends AppCompatActivity {
         return new String(outputArray, 0, outputArrayIndex);
     }
 
+
     String generateKey(String input){
         String alphabet = "abcdefghiklmnopqrstuvwxyz";
         input = input + alphabet;
@@ -256,76 +260,205 @@ public class CipherPlayfair extends AppCompatActivity {
         return (new String(chars, 0, len));
     }
 
+    char[][] matriksKey(String input){
+        char key[][] = new char[5][5];
+        int n=0;
+            for(int i=0 ; i<5 ; i++){
+                for(int j=0 ; j<5 ; j++ ){
+                    key[i][j] = input.charAt(n);
+                    n++;
+                }
+            }
+        return key;
+    }
 
-    String encrypt(int key, String input){
+    String cleanPlain(String input){
+        input = removeChar(input.replaceAll("j","i"),' ');
         char[] chars = input.toCharArray();
+        int enums = 1;
 
-        int num_row = 0;
-        int id_plain = 0;
-        if(input.length() % key == 0){
-            num_row = input.length() / key;
-            Log.d("Row", Integer.toString(num_row));
-            Log.d("Input Length", Integer.toString(input.length()));
-            Log.d("Key", Integer.toString(key));
-        }else{
-            num_row = (input.length() / key) + 1;
-            Log.d("Row", Integer.toString(num_row));
-            Log.d("Input Length", Integer.toString(input.length()));
-            Log.d("Key", Integer.toString(key));
+        String hasil = "";
+        hasil += chars[0];
+
+        for(int i=1 ; i<input.length(); i++){
+            if(chars[i] == hasil.charAt(enums-1)){
+                hasil += 'x';
+                enums ++;
+            }
+            hasil += chars[i];
+            enums++;
         }
 
-        char plain[][] = new char[num_row][key];
-        for(int i=0 ; i<num_row ; i++){
-            for(int j=0 ; j<key ; j++){
-                if(id_plain < input.length()){
-                    plain[i][j] = chars[id_plain];
-                    id_plain++;
-                }else{
-                    plain[i][j] = '.';
+        if(enums%2 == 1)
+            hasil += 'x';
+
+        return hasil;
+    }
+
+    int[] searchElement(char find, char[][] matrix){
+        int[] indeks = new int[2];
+        boolean state = false;
+
+        for(int i=0 ;i<5 ;i++){
+            for(int j=0;j<5 ;j++){
+                if(find == matrix[i][j]) {
+                    indeks[0] = i;
+                    indeks[1] = j;
+                    state = true;
                 }
             }
         }
+        return indeks;
+    }
 
-        String output = "";
-        for(int i=0 ; i<key ; i++){
-            for(int j=0 ; j<num_row ; j++){
-                output = output + plain[j][i];
+    String addSeparator(String input, char sep){
+        char[] chars = input.toCharArray();
+        String output ="";
+        for(int i=0 ; i<input.length(); i++){
+            output += chars[i];
+            if(i%2==1){
+                output += sep;
             }
         }
-
         return output;
     }
 
-    String decrypt(int key, String input){
-        char[] chars = input.toCharArray();
-        key = input.length() / key;
-        int num_row = 0;
-        int id_plain = 0;
-        if(input.length() % key == 0){
-            num_row = input.length() / key;
-        }else{
-            num_row = (input.length() / key) + 1;
-        }
 
-        char plain[][] = new char[num_row][key];
-        for(int i=0 ; i<num_row ; i++){
-            for(int j=0 ; j<key ; j++){
-                if(id_plain < input.length()){
-                    plain[i][j] = chars[id_plain];
-                    id_plain++;
+    String encrypt(String key, String input){
+        input = cleanPlain(input);
+        char[] chars = input.toCharArray();
+        key = removeChar(removeChar(removeDuplicate(generateKey(key)),'j'),' ');
+        char matriksKey[][] = matriksKey(key);
+
+        Log.d("Key", key);
+        Log.d("Plain", input);
+
+        String hasil = "";
+        int[] index1 = new int[2];
+        int[] index2 = new int[2];
+
+        for(int i=0 ; i<input.length() ; i+=2){
+            index1 = searchElement(chars[i],matriksKey);
+            index2 = searchElement(chars[i+1],matriksKey);
+
+            if(index1[1] == index2[1]){
+                if(index1[0] == 4) {
+                    hasil += matriksKey[0][index1[1]];
                 }else{
-                    plain[i][j] = '.';
+                    hasil+= matriksKey[index1[0]+1][index1[1]];
+                }
+
+                if(index2[0] == 4) {
+                    hasil += matriksKey[0][index2[1]];
+                }else{
+                    hasil+= matriksKey[index2[0]+1][index2[1]];
+                }
+            }
+
+            if(index1[0] == index2[0]){
+                if(index1[1] == 4) {
+                    hasil += matriksKey[index1[0]][0];
+                }else{
+                    hasil+= matriksKey[index1[0]][index1[1]+1];
+                }
+
+                if(index2[1] == 4) {
+                    hasil += matriksKey[index2[0]][0];
+                }else{
+                    hasil+= matriksKey[index2[0]][index2[1]+1];
+                }
+            }
+
+            if((index1[0] != index2[0])&&(index1[1] != index2[1])){
+                if(index1[0] < index2[0]){
+                    if(index1[1]<index2[1]){
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }else{
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }
+                }else{
+                    if(index1[1]<index2[1]){
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }else{
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }
                 }
             }
         }
 
-        String output = "";
-        for(int i=0 ; i<key ; i++){
-            for(int j=0 ; j<num_row ; j++){
-                output = output + plain[j][i];
+        return hasil.toUpperCase();
+    }
+
+    String decrypt(String key, String input){
+        input = cleanPlain(input);
+        char[] chars = input.toCharArray();
+        key = removeChar(removeChar(removeDuplicate(generateKey(key)),'j'),' ');
+        char matriksKey[][] = matriksKey(key);
+
+        Log.d("Key", key);
+        Log.d("Plain", input);
+
+        String hasil = "";
+        int[] index1 = new int[2];
+        int[] index2 = new int[2];
+
+        for(int i=0 ; i<input.length() ; i+=2){
+            index1 = searchElement(chars[i],matriksKey);
+            index2 = searchElement(chars[i+1],matriksKey);
+
+            if(index1[1] == index2[1]){
+                if(index1[0] == 0) {
+                    hasil += matriksKey[4][index1[1]];
+                }else{
+                    hasil+= matriksKey[index1[0]-1][index1[1]];
+                }
+
+                if(index2[0] == 0) {
+                    hasil += matriksKey[4][index2[1]];
+                }else{
+                    hasil+= matriksKey[index2[0]-1][index2[1]];
+                }
+            }
+
+            if(index1[0] == index2[0]){
+                if(index1[1] == 0) {
+                    hasil += matriksKey[index1[0]][4];
+                }else{
+                    hasil+= matriksKey[index1[0]][index1[1]-1];
+                }
+
+                if(index2[1] == 0) {
+                    hasil += matriksKey[index2[0]][4];
+                }else{
+                    hasil+= matriksKey[index2[0]][index2[1]-1];
+                }
+            }
+
+            if((index1[0] != index2[0])&&(index1[1] != index2[1])){
+                if(index1[0] > index2[0]){
+                    if(index1[1]<index2[1]){
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }else{
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }
+                }else{
+                    if(index1[1]<index2[1]){
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }else{
+                        hasil += matriksKey[index1[0]][index2[1]];
+                        hasil += matriksKey[index2[0]][index1[1]];
+                    }
+                }
             }
         }
 
-        return output;
+        return removeChar(hasil,'x').toUpperCase();
     }
 }
