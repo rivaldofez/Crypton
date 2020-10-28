@@ -2,6 +2,7 @@
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -13,28 +14,37 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
   public class SteganographyLSB extends AppCompatActivity {
-    ImageView selectedImage;
+    ImageView selectedImage, stegoImage;
     String currentPhotoPath;
-    Button btnCamera, btnGallery;
+    Button btnCamera, btnGallery, btnEncode, btnDecode;
+    TextView txtSecret;
     public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
-      public static final int GALLERY_REQUEST_CODE = 103;
+    public static final int GALLERY_REQUEST_CODE = 103;
 
 
     @Override
@@ -42,8 +52,16 @@ import java.util.Date;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steganography_lsb);
 
+//        int a=10;
+//        char b=(char)a;
+//        Log.d("Hasil", " "+b);
+
         selectedImage = findViewById(R.id.imgCover);
+        stegoImage = findViewById(R.id.imgStego);
+        btnEncode = findViewById(R.id.btnEncode);
+        btnDecode = findViewById(R.id.btnDecode);
         btnCamera = findViewById(R.id.btnCamera);
+        txtSecret = findViewById(R.id.txtSecret);
         btnGallery = findViewById(R.id.btnGallery);
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +76,21 @@ import java.util.Date;
             public void onClick(View v) {
                 Intent gallery = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(gallery,GALLERY_REQUEST_CODE);
+            }
+        });
+
+        btnEncode.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                encodeImg(selectedImage, "Rivaldo Fernandes");
+            }
+        });
+
+        btnDecode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               txtSecret.setText(decodeImg(stegoImage));
             }
         });
     }
@@ -162,4 +195,125 @@ import java.util.Date;
           }
       }
 
+      public void encodeImg(ImageView imgEncrypt, String inputMessage){
+          char[] message = toBinary(inputMessage).toCharArray();
+
+          Bitmap bmap;
+          BitmapDrawable bmapD = (BitmapDrawable)imgEncrypt.getDrawable();
+          bmap = bmapD.getBitmap();
+
+          Bitmap operation = Bitmap.createBitmap(bmap.getWidth(),bmap.getHeight(),bmap.getConfig());
+
+          Integer idMessage = 0;
+          for(int i=0; i<bmap.getWidth(); i++){
+              for(int j=0; j<bmap.getHeight();j++){
+
+                  Integer p = bmap.getPixel(i, j);
+                  Integer r = Color.red(p);
+                  Integer g = Color.green(p);
+                  Integer b = Color.blue(p);
+                  Integer alpha = Color.alpha(p);
+
+                  for(int k = 0; k < 3; k++){
+                      if(idMessage < message.length){
+                          if(k == 0){
+                              if((r % 2 == 0 && message[idMessage] == '1') || (r % 2 == 1 && message[idMessage] == '0')){
+                                  r = r ^ 1;
+                              }
+                          }else if(k == 1){
+                              if((g % 2 == 0 && message[idMessage] == '1') || (g % 2 == 1 && message[idMessage] == '0')){
+                                  g = g ^ 1;
+                              }
+                          }else if(k==2) {
+                              if((b % 2 == 0 && message[idMessage] == '1') || (b % 2 == 1 && message[idMessage] == '0')){
+                                  b = b ^ 1;
+                              }
+                          }
+                      }
+                      idMessage++;
+                  }
+                  operation.setPixel(i, j, Color.argb(alpha, r, g, b));
+              }
+          }
+          Log.d("Test","Okeee");
+          stegoImage.setImageBitmap(operation);
+      }
+
+      public String decodeImg(ImageView imgEncrypt){
+          String message = "";
+          String hasil ="";
+
+          Bitmap bmap;
+          BitmapDrawable bmapD = (BitmapDrawable)imgEncrypt.getDrawable();
+          bmap = bmapD.getBitmap();
+
+          Integer idMessage = 1;
+          for(int i=0; i<bmap.getWidth(); i++){
+              for(int j=0; j<bmap.getHeight();j++){
+
+                  Integer p = bmap.getPixel(i, j);
+                  Integer r = Color.red(p);
+                  Integer g = Color.green(p);
+                  Integer b = Color.blue(p);
+                  Integer alpha = Color.alpha(p);
+
+                  for(int k = 0; k < 3; k++){
+                        if(k == 0){
+                            if(r % 2 == 0){
+                                message = message + '0';
+                            }else {
+                                message = message + '1';
+                            }
+                        }else if(k == 1){
+                            if(g % 2 == 0){
+                                message = message + '0';
+                            }else {
+                                message = message + '1';
+                            }
+                        }else if(k == 2){
+                            if(b % 2 == 0){
+                                message = message + '0';
+                            }else {
+                                message = message + '1';
+                            }
+                        }
+
+                        if(idMessage == 8){
+                            int num = Integer.parseInt(message,2);
+
+                            if(num>32 && num<127){
+                                char letter = (char)num;
+                                Log.d("Num", ""+letter);
+                                hasil = hasil + letter;
+                            }
+                            message="";
+                            idMessage = 0;
+                        }
+                        idMessage++;
+                  }
+              }
+          }
+          return hasil;
+      }
+
+      public String toBinary(String input){
+        String hasil="";
+        char[] inputChar = input.toCharArray();
+        for(int i = 0; i< inputChar.length; i++){
+            hasil += String.format("%1$8s", Integer.toBinaryString( ((int)inputChar[i]) )).replace(' ','0');
+        }
+        return hasil;
+      }
+
+      public String binaryToText(String binaryString) {
+          String letters = "01001000 01100001 01110000 01110000 01111001 00100000 01000101 01100001 01110011 01110100 01100101 01110010 00100001";
+          String s = " ";
+          for(int index = 0; index < letters.length(); index+=9) {
+              String temp = letters.substring(index, index+8);
+              int num = Integer.parseInt(temp,2);
+              char letter = (char) num;
+              s = s+letter;
+          }
+          return s;
+      }
   }
