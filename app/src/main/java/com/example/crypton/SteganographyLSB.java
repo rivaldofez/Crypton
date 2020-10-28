@@ -9,6 +9,7 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ import java.util.Date;
     Button btnCamera, btnGallery;
     public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
+      public static final int GALLERY_REQUEST_CODE = 103;
 
 
     @Override
@@ -53,7 +56,8 @@ import java.util.Date;
         btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SteganographyLSB.this, "Button Gallery pressed", Toast.LENGTH_SHORT).show();
+                Intent gallery = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(gallery,GALLERY_REQUEST_CODE);
             }
         });
     }
@@ -97,10 +101,26 @@ import java.util.Date;
                    Uri contentUri = Uri.fromFile(f);
                   mediaScanIntent.setData(contentUri);
                   this.sendBroadcast(mediaScanIntent);
-
-
               }
           }
+
+          if (requestCode == GALLERY_REQUEST_CODE) {
+//              Bitmap image = (Bitmap) data.getExtras().get("data");
+//              selectedImage.setImageBitmap(image);
+
+              if(resultCode == Activity.RESULT_OK){
+                  Uri contentUri = data.getData();
+                  String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                  String imageFileName = "JPEG_" + timestamp + "." + getFileExt(contentUri);
+                  selectedImage.setImageURI(contentUri);
+              }
+          }
+      }
+
+      private String getFileExt(Uri contentUri) {
+          ContentResolver c = getContentResolver();
+          MimeTypeMap mime = MimeTypeMap.getSingleton();
+          return mime.getExtensionFromMimeType(c.getType(contentUri));
       }
 
       private File createImageFile() throws IOException {
