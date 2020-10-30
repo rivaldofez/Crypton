@@ -83,7 +83,7 @@ import java.util.Date;
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                encodeImg(selectedImage, "Rivaldo Fernandes~_~");
+                encodeImg(selectedImage, "Untuk bisa lulus dan mendapatkan sertifikat dari akademi ini, Anda harus mengerjakan tugas Halaman Website sesuai kriteria lengkap di bawah~_~");
             }
         });
 
