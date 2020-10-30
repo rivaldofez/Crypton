@@ -77,11 +77,16 @@ public class DecodeLSB extends Fragment {
         btnDecode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String extracted = decodeImg(stegoImage).trim();
-                if(extracted.equals("") || extracted == ""){
-                    Toast.makeText(getActivity(), "Fail to generate secret message", Toast.LENGTH_SHORT).show();
+                if(stegoImage.getDrawable() == null){
+                    Toast.makeText(getActivity(), "Add image first.", Toast.LENGTH_SHORT).show();
                 }else{
-                    txtMessage.setText(extracted);
+                    String extracted = decodeImg(stegoImage).trim();
+                    extracted = extracted.replace("~_~", "");
+                    if(extracted.equals("") || extracted == ""){
+                        Toast.makeText(getActivity(), "Fail to generate secret message", Toast.LENGTH_SHORT).show();
+                    }else{
+                        txtMessage.setText(extracted);
+                    }
                 }
             }
         });
@@ -154,18 +159,10 @@ public class DecodeLSB extends Fragment {
         }
     }
 
-//      private void openCamera() {
-//        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(camera, CAMERA_REQUEST_CODE);
-//      }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE) {
-//              Bitmap image = (Bitmap) data.getExtras().get("data");
-//              selectedImage.setImageBitmap(image);
 
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(currentPhotoPath);
@@ -255,8 +252,6 @@ public class DecodeLSB extends Fragment {
                 Integer r = Color.red(p);
                 Integer g = Color.green(p);
                 Integer b = Color.blue(p);
-                Integer alpha = Color.alpha(p);
-
 
                 for(int k = 0; k < 3; k++){
                     if(k == 0){

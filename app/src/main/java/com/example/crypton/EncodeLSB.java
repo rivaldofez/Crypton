@@ -133,7 +133,13 @@ public class EncodeLSB extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askWritePermissions();
+                if(stegoImage.getDrawable() == null){
+                    Toast.makeText(getActivity(), "Image not generated yet.", Toast.LENGTH_SHORT).show();
+                }else{
+                    askWritePermissions();
+                }
+
+
             }
         });
 
