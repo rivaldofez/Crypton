@@ -83,7 +83,7 @@ import java.util.Date;
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                encodeImg(selectedImage, "Rivaldo Fernandes");
+                encodeImg(selectedImage, "Rivaldo Fernandes~_~");
             }
         });
 
@@ -248,6 +248,7 @@ import java.util.Date;
           bmap = bmapD.getBitmap();
 
           Integer idMessage = 1;
+          int idsearch = 0;
           for(int i=0; i<bmap.getWidth(); i++){
               for(int j=0; j<bmap.getHeight();j++){
 
@@ -256,6 +257,7 @@ import java.util.Date;
                   Integer g = Color.green(p);
                   Integer b = Color.blue(p);
                   Integer alpha = Color.alpha(p);
+
 
                   for(int k = 0; k < 3; k++){
                         if(k == 0){
@@ -281,10 +283,26 @@ import java.util.Date;
                         if(idMessage == 8){
                             int num = Integer.parseInt(message,2);
 
-                            if(num>32 && num<127){
+                            if(num >= 32 && num<127){
                                 char letter = (char)num;
                                 Log.d("Num", ""+letter);
+
+                                if(letter == '~'){
+                                    idsearch ++;
+                                }else if(letter == '_' && idsearch == 1){
+                                    idsearch++;
+                                }else{
+                                    idsearch = 0;
+                                }
+
                                 hasil = hasil + letter;
+
+                                if(idsearch == 3){
+                                    i = bmap.getWidth();
+                                    j = bmap.getHeight();
+                                    k = 3;
+                                    Log.d("Test", "Ketemu");
+                                }
                             }
                             message="";
                             idMessage = 0;
@@ -303,17 +321,5 @@ import java.util.Date;
             hasil += String.format("%1$8s", Integer.toBinaryString( ((int)inputChar[i]) )).replace(' ','0');
         }
         return hasil;
-      }
-
-      public String binaryToText(String binaryString) {
-          String letters = "01001000 01100001 01110000 01110000 01111001 00100000 01000101 01100001 01110011 01110100 01100101 01110010 00100001";
-          String s = " ";
-          for(int index = 0; index < letters.length(); index+=9) {
-              String temp = letters.substring(index, index+8);
-              int num = Integer.parseInt(temp,2);
-              char letter = (char) num;
-              s = s+letter;
-          }
-          return s;
       }
   }
