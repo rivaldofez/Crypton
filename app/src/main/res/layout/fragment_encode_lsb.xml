@@ -101,7 +101,6 @@
                 android:ems="10"
                 android:gravity="top"
                 android:hint="Input Message"
-                android:inputType="numberSigned"
                 android:padding="8dp" />
 
 
