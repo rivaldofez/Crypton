@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,6 +53,7 @@ public class EncodeLSB extends Fragment {
     public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     public static final int GALLERY_REQUEST_CODE = 103;
+    public static final int WRITING_PERMISSION_CODE = 104;
 
     public EncodeLSB() {
         // Required empty public constructor
@@ -128,6 +130,13 @@ public class EncodeLSB extends Fragment {
             }
         });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askWritePermissions();
+            }
+        });
+
         return view;
     }
 
@@ -159,7 +168,13 @@ public class EncodeLSB extends Fragment {
         }
     }
 
-
+    private void askWritePermissions() {
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITING_PERMISSION_CODE);
+        }else{
+            saveImage();
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -169,21 +184,20 @@ public class EncodeLSB extends Fragment {
             }else{
                 Toast.makeText(getActivity(), "Camera Permission is Required to Use Camera", Toast.LENGTH_SHORT).show();
             }
+        }else if(requestCode == WRITING_PERMISSION_CODE){
+            if(grantResults.length < 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                saveImage();
+            }else{
+                Toast.makeText(getActivity(), "Writing external storage is Required to Use Camera", Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
-//      private void openCamera() {
-//        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(camera, CAMERA_REQUEST_CODE);
-//      }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE) {
-//              Bitmap image = (Bitmap) data.getExtras().get("data");
-//              selectedImage.setImageBitmap(image);
 
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(currentPhotoPath);
@@ -296,7 +310,6 @@ public class EncodeLSB extends Fragment {
                 operation.setPixel(i, j, Color.argb(alpha, r, g, b));
             }
         }
-        Log.d("Test","Okeee");
         imgStego.setImageBitmap(operation);
         stegoBitmap = operation;
     }
@@ -310,4 +323,43 @@ public class EncodeLSB extends Fragment {
         return hasil;
     }
 
+    private void saveImage(){
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) stegoImage.getDrawable();
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+
+        FileOutputStream fileOutputStream = null;
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String FileName = "PNG_STEGO_" + timeStamp + "_";
+
+        try {
+            File image = File.createTempFile(
+                    FileName,  /* prefix */
+                    ".png",         /* suffix */
+                    dir      /* directory */
+            );
+            fileOutputStream = new FileOutputStream(image);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //String imageFileName = String.format("%d.png",FileName);
+        //File outFile = new File(dir,imageFileName);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
+        try{
+            fileOutputStream.flush();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try{
+            fileOutputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Toast.makeText(getActivity(), "File has been saved to Pictures", Toast.LENGTH_SHORT).show();
+    }
 }
