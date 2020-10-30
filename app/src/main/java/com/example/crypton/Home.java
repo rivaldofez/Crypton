@@ -10,7 +10,6 @@ import android.widget.Button;
 
 public class Home extends AppCompatActivity {
 
-    ConstraintLayout containerCipher, containerTranspose, containerSuper, containerVigenere, containerPlayfair;
     Button btnExit;
 
     @Override
@@ -18,48 +17,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        containerCipher = findViewById(R.id.containerCipher);
-        containerSuper = findViewById(R.id.containerSuper);
-        containerTranspose = findViewById(R.id.containerTranspose);
-        containerVigenere = findViewById(R.id.containerVigenere);
-        containerPlayfair = findViewById(R.id.containerPlayfair);
         btnExit = findViewById(R.id.btnExit);
-
-        containerCipher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, CipherText.class));
-            }
-        });
-
-        containerTranspose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, CipherTranspose.class));
-            }
-        });
-
-        containerSuper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, CipherSuper.class));
-            }
-        });
-
-        containerVigenere.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, CipherVigenere.class));
-            }
-        });
-
-
-        containerPlayfair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, CipherPlayfair.class));
-            }
-        });
 
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,5 +25,29 @@ public class Home extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void Cipher(View view) {
+        startActivity(new Intent(Home.this, CipherText.class));
+    }
+
+    public void Transposisi(View view) {
+        startActivity(new Intent(Home.this, CipherTranspose.class));
+    }
+
+    public void Super(View view) {
+        startActivity(new Intent(Home.this, CipherSuper.class));
+    }
+
+    public void Vigenere(View view) {
+        startActivity(new Intent(Home.this, CipherVigenere.class));
+    }
+
+    public void Playfair(View view) {
+        startActivity(new Intent(Home.this, CipherPlayfair.class));
+    }
+
+    public void SteganographyLSB(View view) {
+        startActivity(new Intent(Home.this, SteganographyLSB.class));
     }
 }

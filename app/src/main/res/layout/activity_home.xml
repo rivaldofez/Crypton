@@ -4,302 +4,287 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Home">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="249dp"
-        android:layout_height="57dp"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:layout_marginTop="32dp"
-        android:contentDescription="TODO"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/crypton2" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerCipher"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/custom_menu"
-            android:elevation="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgLogo"
-            tools:ignore="MissingConstraints">
+    <GridLayout
+        android:id="@+id/gridline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgLogo"
+        android:rowCount="3"
+        android:layout_margin="16dp"
+        android:columnCount="2">
 
-            <TextView
-                android:id="@+id/txtCipher"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="8dp"
+            android:onClick="Cipher"
+            app:cardElevation="8dp">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Caesar Cipher"
-                android:textColor="#1A2050"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical">
 
-            <ImageView
-                android:id="@+id/imgCipher"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtCipher"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/menu_cc" />
+                <TextView
+                    android:id="@+id/txtCipher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center"
+                    android:text="Caesar Cipher"
+                    android:textColor="#1A2050"
+                    android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imgCipher"
+                    android:layout_margin="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/menu_cc" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerTranspose"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="33dp"
-            android:background="@drawable/custom_menu"
-            android:elevation="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgLogo"
-            tools:ignore="MissingConstraints">
 
-            <TextView
-                android:id="@+id/txtTranspose"
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="Transposisi"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Transposisi Cipher"
-                android:textAlignment="center"
-                android:textColor="#1A2050"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical">
 
-            <ImageView
-                android:id="@+id/imgTranspose"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtTranspose"
-                app:srcCompat="@drawable/menu_tc" />
+                <TextView
+                    android:id="@+id/txtTranspose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center"
+                    android:text="Transposisi Cipher"
+                    android:textColor="#1A2050"
+                    android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerSuper"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="33dp"
-            android:background="@drawable/custom_menu"
-            android:elevation="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerTranspose"
-            tools:ignore="MissingConstraints">
+                    android:id="@+id/imgTranspose"
+                    android:layout_margin="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/menu_tc"/>
 
-            <TextView
-                android:id="@+id/txtSuper"
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="Super"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="C Super Encryption"
-                android:textAlignment="center"
-                android:textColor="#1A2050"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical">
 
-            <ImageView
-                android:id="@+id/imageSuper"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSuper"
-                app:layout_constraintVertical_bias="0.304"
-                app:srcCompat="@drawable/menu_cc_tc" />
+                <TextView
+                    android:id="@+id/txtSuper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center"
+                    android:text="C Super Encryption"
+                    android:textColor="#1A2050"
+                    android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imageSuper"
+                    android:layout_margin="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/menu_cc_tc"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerVigenere"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            android:layout_marginTop="33dp"
-            android:layout_marginEnd="33dp"
-            android:background="@drawable/custom_menu"
-            android:elevation="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerTranspose"
-            tools:ignore="MissingConstraints">
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txtVigenere"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="Vigenere"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Vigenere Cipher"
-                android:textAlignment="center"
-                android:textColor="#1A2050"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical">
 
-            <ImageView
-                android:id="@+id/imageVigenere"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtVigenere"
-                app:layout_constraintVertical_bias="0.304"
-                app:srcCompat="@drawable/menu_vc" />
+                <TextView
+                    android:id="@+id/txtVigenere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center"
+                    android:text="Vigenere Cipher"
+                    android:textColor="#1A2050"
+                    android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imageVigenere"
+                    android:layout_margin="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/menu_vc" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerPlayfair"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="33dp"
-            android:background="@drawable/custom_menu"
-            android:elevation="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerSuper"
-            tools:ignore="MissingConstraints">
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txtPlayfair"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="Playfair"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Playfair Cipher"
-                android:textAlignment="center"
-                android:textColor="#1A2050"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical">
 
-            <ImageView
-                android:id="@+id/imagePlayfair"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtPlayfair"
-                app:layout_constraintVertical_bias="0.304"
-                app:srcCompat="@drawable/menu_pc" />
+                <TextView
+                    android:id="@+id/txtPlayfair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center"
+                    android:text="Playfair Cipher"
+                    android:textColor="#1A2050"
+                    android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imagePlayfair"
+                    android:layout_margin="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/menu_pc" />
 
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerStegano"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            android:layout_marginTop="33dp"
-            android:layout_marginEnd="33dp"
-            android:background="@drawable/custom_menu"
-            android:elevation="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerVigenere"
-            tools:ignore="MissingConstraints">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="2"
+            android:layout_gravity="fill"
+            android:layout_rowWeight="1"
+            android:onClick="SteganographyLSB"
+            android:layout_columnWeight="1"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
 
-            <TextView
-                android:id="@+id/txtStegano"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Steganografi"
-                android:textAlignment="center"
-                android:textColor="#1A2050"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical">
 
-            <ImageView
-                android:id="@+id/imageStegano"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtStegano"
-                app:layout_constraintVertical_bias="0.304"
-                app:srcCompat="@drawable/menu_stegano" />
+                <TextView
+                    android:id="@+id/txtStegano"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center"
+                    android:text="LSB Steganography"
+                    android:textColor="#1A2050"
+                    android:textSize="15sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imageStegano"
+                    android:layout_margin="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/menu_stegano" />
 
-        <Button
-            android:id="@+id/btnExit"
-            android:layout_width="126dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/btn_2"
-            android:fontFamily="sans-serif-medium"
-            android:text="Exit"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerPlayfair" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_width="126dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_2"
+        android:fontFamily="sans-serif-medium"
+        android:text="Exit"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@id/gridline"
+        android:layout_centerHorizontal="true"
+        />
+    </RelativeLayout>
 </ScrollView>
