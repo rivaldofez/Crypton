@@ -82,7 +82,7 @@ public class EncodeLSB extends Fragment {
                 if(message.equals("") || message == ""){
                     Toast.makeText(getActivity(), "Add message first", Toast.LENGTH_SHORT).show();
                 }else{
-                    encodeImg(coverImage,message,stegoImage);
+                    encodeImg(coverImage,message + "~_~",stegoImage);
                 }
             }
         });
