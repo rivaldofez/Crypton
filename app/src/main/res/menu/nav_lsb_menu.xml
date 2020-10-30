@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Encode"
+        android:id="@+id/encodeLSB"
+        android:icon="@drawable/ic_baseline_lock_24"/>
+    <item android:title="Decode"
+        android:id="@+id/decodeLSB"
+        android:icon="@drawable/ic_baseline_lock_24"/>
+</menu>
