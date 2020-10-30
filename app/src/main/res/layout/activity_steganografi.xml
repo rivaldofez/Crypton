@@ -109,7 +109,7 @@
                 android:background="#FFFFFF"
                 android:ems="10"
                 android:gravity="top"
-                android:hint="Input key.."
+                android:hint="Input key."
                 android:padding="8dp" />
 
             <Button
