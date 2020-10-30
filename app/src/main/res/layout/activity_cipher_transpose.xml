@@ -175,11 +175,11 @@
 
             <TextView
                 android:id="@+id/txtOutput"
-                android:layout_below="@id/txtCipher"
                 android:layout_width="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_height="150dp"
                 android:background="#FFFFFF"
+                android:textIsSelectable="true"
                 android:padding="8dp" />
 
             <Button
