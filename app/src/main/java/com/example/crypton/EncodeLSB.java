@@ -3,6 +3,7 @@ package com.example.crypton;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -85,6 +87,7 @@ public class EncodeLSB extends Fragment {
                     Toast.makeText(getActivity(), "Add message first", Toast.LENGTH_SHORT).show();
                 }else{
                     encodeImg(coverImage,message + "~_~",stegoImage);
+
                 }
             }
         });
@@ -368,4 +371,5 @@ public class EncodeLSB extends Fragment {
 
         Toast.makeText(getActivity(), "File has been saved to Pictures", Toast.LENGTH_SHORT).show();
     }
+
 }

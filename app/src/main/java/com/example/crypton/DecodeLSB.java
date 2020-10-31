@@ -177,9 +177,6 @@ public class DecodeLSB extends Fragment {
         }
 
         if (requestCode == GALLERY_REQUEST_CODE) {
-//              Bitmap image = (Bitmap) data.getExtras().get("data");
-//              selectedImage.setImageBitmap(image);
-
             if(resultCode == Activity.RESULT_OK){
                 Uri contentUri = data.getData();
                 String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
