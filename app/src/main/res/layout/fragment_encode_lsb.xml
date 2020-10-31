@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CipherTranspose">
-
+    tools:context=".EncodeLSB">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,16 +17,16 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-black"
-            android:text="Cipher Transposition"
+            android:text="Encoding LSB Steganography"
             android:textSize="25sp" />
 
         <TextView
-            android:id="@+id/txtCipher"
+            android:id="@+id/txtCover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:layout_below="@id/txtHeader"
-            android:text="Plainteks"
+            android:text="Cover Image"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:textColor="#1A2050"
@@ -44,33 +41,27 @@
             android:layout_marginStart="16dp"
             android:elevation="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_below="@id/txtCipher">
+            android:layout_below="@id/txtCover">
 
-            <EditText
-                android:id="@+id/etInput"
+            <ImageView
+                android:id="@+id/imgCover"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_below="@id/txtCipher"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="0dp"
                 android:background="#FFFFFF"
-                android:ems="10"
-                android:gravity="top"
-                android:hint="Input Text or upload file.."
-                android:inputType="textMultiLine"
-                android:padding="8dp" />
+                android:gravity="top" />
 
             <Button
-                android:id="@+id/btnUpload"
+                android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_1"
                 android:fontFamily="sans-serif-medium"
-                android:text="Upload"
+                android:text="Add"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:layout_below="@id/etInput"
+                android:layout_alignBottom="@id/imgCover"
                 android:layout_margin="8dp"
                 android:layout_alignParentEnd="true"
                 android:textStyle="bold" />
@@ -79,19 +70,19 @@
 
 
         <TextView
-            android:id="@+id/txtKey"
+            android:id="@+id/txtMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:layout_below="@id/containerInput"
-            android:text="Input Key"
+            android:text="Input Message"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:textColor="#1A2050"
             android:textSize="18sp" />
 
         <RelativeLayout
-            android:id="@+id/containerKey"
+            android:id="@+id/containerMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -99,64 +90,44 @@
             android:layout_marginStart="16dp"
             android:elevation="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_below="@id/txtKey">
+            android:layout_below="@id/txtMessage">
 
             <EditText
-                android:id="@+id/etKey"
+                android:id="@+id/etMessage"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/txtCipher"
+                android:layout_height="100dp"
                 android:layout_marginTop="8dp"
                 android:background="#FFFFFF"
                 android:ems="10"
                 android:gravity="top"
-                android:hint="Input key.."
-                android:inputType="numberSigned"
+                android:hint="Input Message"
                 android:padding="8dp" />
 
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/containerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_below="@id/containerKey">
-
-            <Button
-                android:id="@+id/btnDecrypt"
-                android:layout_width="148dp"
-                android:layout_height="50dp"
-                android:background="@drawable/btn_3"
-                android:fontFamily="sans-serif-medium"
-                android:text="Decrypt"
-                android:layout_alignParentStart="true"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnEncrypt"
-                android:layout_width="148dp"
-                android:layout_height="49dp"
-                android:background="@drawable/btn_2"
-                android:fontFamily="sans-serif-medium"
-                android:text="Encrypt"
-                android:layout_alignParentEnd="true"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+        <Button
+            android:id="@+id/btnEncode"
+            android:layout_width="148dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_3"
+            android:fontFamily="sans-serif-medium"
+            android:text="Encode"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/containerMessage"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtCipherOutput"
+            android:id="@+id/txtStegoImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:layout_below="@id/containerButton"
-            android:text="Cipher Text"
+            android:layout_below="@id/btnEncode"
+            android:text="Stego Image"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:textColor="#1A2050"
             android:textSize="18sp" />
@@ -166,21 +137,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:elevation="8dp"
             android:background="@drawable/custom_input"
             android:layout_marginStart="16dp"
+            android:elevation="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:layout_below="@id/txtCipherOutput">
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/txtStegoImage">
 
-            <TextView
-                android:id="@+id/txtOutput"
+            <ImageView
+                android:id="@+id/imgStego"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_height="150dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
                 android:background="#FFFFFF"
-                android:textIsSelectable="true"
-                android:padding="8dp" />
+                android:gravity="top" />
 
             <Button
                 android:id="@+id/btnSave"
@@ -191,11 +162,10 @@
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:layout_below="@id/txtOutput"
+                android:layout_alignBottom="@id/imgStego"
                 android:layout_margin="8dp"
                 android:layout_alignParentEnd="true"
                 android:textStyle="bold" />
-
         </RelativeLayout>
     </RelativeLayout>
 

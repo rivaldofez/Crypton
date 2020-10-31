@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -163,7 +164,7 @@ public class CipherText extends AppCompatActivity {
     }
 
     private void performFileSearch(){
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/*");
         startActivityForResult(intent, READ_REQUEST_CODE);
@@ -171,31 +172,33 @@ public class CipherText extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            if(data != null){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
                 Uri uri = data.getData();
                 String path = uri.getPath();
                 path = path.substring(path.indexOf(":") + 1);
-                if(path.contains("emulated")){
+                if (path.contains("emulated")) {
                     path = path.substring(path.indexOf("0") + 1);
                 }
                 Toast.makeText(this, "" + path, Toast.LENGTH_SHORT).show();
+                Log.d("Test", path);
                 txtInput.setText(readText(path));
             }
-        }else if(requestCode == WRITE_REQUEST_CODE){
-            if(resultCode == RESULT_OK){
+        } else if (requestCode == WRITE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
 
-                try{
+                try {
                     Uri uri = data.getData();
                     OutputStream outputStream = getContentResolver().openOutputStream(uri);
                     outputStream.write(txtOutput.getText().toString().getBytes());
                     outputStream.close();
 
                     Toast.makeText(this, "File berhasil disimpan", Toast.LENGTH_SHORT).show();
-                }catch (IOException e){
+                } catch (IOException e) {
                     Toast.makeText(this, "File gagal disimpan", Toast.LENGTH_SHORT).show();
                 }
-            }else{
+            } else {
                 Toast.makeText(this, "File gagal disimpan", Toast.LENGTH_SHORT).show();
             }
         }
