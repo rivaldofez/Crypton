@@ -6,5 +6,5 @@
         android:icon="@drawable/ic_baseline_lock_24"/>
     <item android:title="Decode"
         android:id="@+id/decodeLSB"
-        android:icon="@drawable/ic_baseline_lock_24"/>
+        android:icon="@drawable/ic_baseline_lock_open_24"/>
 </menu>

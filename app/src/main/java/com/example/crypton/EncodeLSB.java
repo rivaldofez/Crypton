@@ -51,7 +51,7 @@ public class EncodeLSB extends Fragment {
     Uri imageUri;
     EditText etMessage;
 
-    Bitmap stegoBitmap = null;
+    Bitmap stegoBitmap = null, coverBitmap = null;
     public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     public static final int GALLERY_REQUEST_CODE = 103;
@@ -98,8 +98,8 @@ public class EncodeLSB extends Fragment {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater().inflate(R.layout.dialog_zoom_pict,null);
                 PhotoView photoView = mView.findViewById(R.id.imgZoom);
-                if (imageUri != null && !imageUri.equals(Uri.EMPTY)) {
-                    photoView.setImageURI(imageUri);
+                if (coverBitmap != null) {
+                    photoView.setImageBitmap(coverBitmap);
                     mBuilder.setView(mView);
                     AlertDialog mDialog = mBuilder.create();
                     mDialog.show();
@@ -210,8 +210,26 @@ public class EncodeLSB extends Fragment {
 
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(currentPhotoPath);
-                coverImage.setImageURI(Uri.fromFile(f));
-                imageUri = Uri.fromFile(f);
+                //coverImage.setImageURI(Uri.fromFile(f));
+
+                Bitmap resized = null;
+                try{
+                    resized = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.fromFile(f));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if(resized.getHeight() > 800 || resized.getWidth() >800){
+                    float aspectRatio = resized.getWidth() /
+                            (float) resized.getHeight();
+                    int width = 500;
+                    int height = Math.round(width / aspectRatio);
+
+                    coverBitmap = Bitmap.createScaledBitmap(resized, width, height, false);
+                }else{
+                    coverBitmap = resized;
+                }
+                coverImage.setImageBitmap(coverBitmap);
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 Uri contentUri = Uri.fromFile(f);
@@ -228,8 +246,24 @@ public class EncodeLSB extends Fragment {
                 Uri contentUri = data.getData();
                 String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "PNG_" + timestamp + "." + getFileExt(contentUri);
-                coverImage.setImageURI(contentUri);
-                imageUri = contentUri;
+
+                Bitmap resized = null;
+                try{
+                    resized = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentUri);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(resized.getHeight() > 800 || resized.getWidth() >800){
+                    float aspectRatio = resized.getWidth() /
+                            (float) resized.getHeight();
+                    int width = 500;
+                    int height = Math.round(width / aspectRatio);
+
+                    coverBitmap = Bitmap.createScaledBitmap(resized, width, height, false);
+                }else{
+                    coverBitmap = resized;
+                }
+                coverImage.setImageBitmap(coverBitmap);
             }
         }
     }

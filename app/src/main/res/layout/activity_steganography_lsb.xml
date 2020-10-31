@@ -11,7 +11,7 @@
         android:id="@+id/navbar_lsb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
+        android:background="@drawable/nav_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/nav_lsb_menu" />
 
